@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>Angles.Desktop</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64;x86;arm64;AnyCPU</Platforms>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <UseWinUI>true</UseWinUI>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <!-- 不打包 .msix；unpackaged：具体 self-contained/RID 交给 Actions 的 publish 命令决定 -->
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSdkBootstrapInitialize>true</WindowsAppSdkBootstrapInitialize>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Windows App SDK：在 Actions runner 上由工作流恢复，本机不需预装 -->
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.*" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- lucide SVG 图标作为 Content，与 exe 同目录发布（unpackaged 可读） -->
+    <Content Include="Assets\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\app.ico" />
+  </ItemGroup>
+</Project>

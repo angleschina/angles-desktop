@@ -1,0 +1,35 @@
+name: build-winui
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'Angles.Desktop/**', '.github/workflows/**' ]
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore Angles.Desktop/Angles.Desktop.csproj
+
+      # WinUI 3 unpackaged 自包含发布，输出可直接在 Win10/11 运行的桌面 exe
+      - name: Publish (win-x64 self-contained)
+        run: dotnet publish Angles.Desktop/Angles.Desktop.csproj -c Release -r win-x64 --self-contained true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Angles-Desktop
+          path: Angles.Desktop/bin/Release/net8.0-windows10.0.19041.0/win-x64/publish
+          if-no-files-found: error

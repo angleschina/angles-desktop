@@ -1,0 +1,11 @@
+# Build
+bin/
+obj/
+*.user
+*.suo
+artifacts/
+
+# IDE
+.vs/
+.vscode/
+*.swp
